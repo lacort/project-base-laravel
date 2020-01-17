@@ -8,13 +8,13 @@
 
 Create image docker with **docker-compose**:
 
-`$ docker-compose build`
+`$ sudo docker-compose build`
 
 ### Step 2
 
 Create containers and configurations of docker with **docker-compose**:
 
-`$ docker-compose up -d`
+`$ sudo docker-compose up -d`
 
 
 ### Step 3

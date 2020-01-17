@@ -15,8 +15,9 @@ class PermissionUser {
 
     public function handle( $request, Closure $next ) {
         if ( $request->user() === null ) {
-            return redirect( to '/' )
+            return redirect('/');
         }
+        $actions = $request->route()->getActions();
         return $next( $request );
     }
 }
