@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
+use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller {
     /**
@@ -23,6 +25,32 @@ class UserController extends Controller {
         return view( 'admin.users.index' )->with( 'users', $users );
     }
 
+    public function create() {
+
+        if ( Gate::denies( 'register-users' ) ) {
+            return redirect( route( 'admin.users.index' ) );
+        }
+        $roles = Role::all();
+        $users = User::all();
+        return view( 'admin.users.create' )->with( [
+            'roles' =>$roles,
+            'user' => $users
+        ] );
+    }
+
+    public function register( Request $request ) {
+
+        $user = new user();
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make( $request->password );
+        //$user->roles = $request->role;
+        $user->save();
+
+        return redirect()->route( 'admin.users.index' );
+    }
+
     /**
     * Show the form for editing the specified resource.
     *
@@ -31,6 +59,10 @@ class UserController extends Controller {
     */
 
     public function edit( User $user ) {
+        if ( Gate::denies( 'edit-users' ) ) {
+            return redirect( route( 'admin.users.index' ) );
+        }
+
         $roles = Role::all();
 
         return view( 'admin.users.edit' )->with( [
@@ -60,9 +92,13 @@ class UserController extends Controller {
     */
 
     public function destroy( User $user ) {
+
+        if ( Gate::denies( 'delete-users' ) ) {
+            return redirect( route( 'admin.users.index' ) );
+        }
         $user->roles()->detach();
         $user->delete();
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route( 'admin.users.index' );
     }
 }
