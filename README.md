@@ -33,3 +33,5 @@ Warning: run the commands bellow in container application.
 
 `$ composer install`
 `$ chown -R www-data:www-data storage/`
+`$ php artisan migrate`
+`$ php artisan db:seed`
