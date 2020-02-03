@@ -28,7 +28,7 @@ class UserController extends Controller {
     public function create() {
 
         if ( Gate::denies( 'register-users' ) ) {
-            return redirect( route( 'admin.users.index' ) );
+            return redirect( route( 'home' ) );
         }
         $roles = Role::all();
         $users = User::all();

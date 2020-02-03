@@ -32,3 +32,4 @@ Install dependecies:
 Warning: run the commands bellow in container application.
 
 `$ composer install`
+`$ chown -R www-data:www-data storage/`

@@ -9,6 +9,7 @@ WORKDIR /var/www
 
 RUN rm -rf /var/www/html  
 RUN ln -s public html
+RUN chown -R 1000:www-data /var/www
 
 
 
