@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateForeignKeysForRoleUserTable extends Migration
+class CreateForeingKeysForRoleUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateForeignKeysForRoleUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('foreign_keys_for_role_user', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+        Schema::table('role_user', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');;
         });
     }
 
@@ -26,6 +26,9 @@ class CreateForeignKeysForRoleUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('foreign_keys_for_role_user');
+        Schema::table('role_user', function (Blueprint $table) {
+            $table->dropForeign('role_user_user_id_foreing');
+            $table->dropForeign('role_user_role_id_foreing');
+        });
     }
 }
