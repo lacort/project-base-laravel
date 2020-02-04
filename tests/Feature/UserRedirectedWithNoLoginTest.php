@@ -4,19 +4,20 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
-class UserRedirectedWithNoLogin extends TestCase
+class UserRedirectedWithNoLoginTest extends TestCase
 {
     /**
      * A basic feature test example.
      *
      * @return void
      */
-    public function testExample()
+    public function testUserRedirectedNoLogin()
     {
-        $response = $this->get('/');
+        $response = $this->get('/home');
 
-        $response->assertStatus(200);
+        $response->assertRedirect(route('login'));
     }
 }
