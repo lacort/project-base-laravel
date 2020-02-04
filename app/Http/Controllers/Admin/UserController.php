@@ -29,9 +29,16 @@ class UserController extends Controller
         return view('admin.users.index')->with('users', $users);
     }
 
+
+    /**
+     * Show the form for created the specified resource.
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+
     public function create()
     {
-
         if (Gate::denies('register-users')) {
             return redirect(route('home'));
         }
@@ -43,19 +50,30 @@ class UserController extends Controller
         ]);
     }
 
+
+    /**
+     * Register the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+
     public function register(Request $request)
     {
-
         $user = new user();
-
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        //$user->roles = $request->role;
         $user->save();
+
+        $role = Role::select('id')->where('name', 'user')->first();
+        $user->roles()->attach($role);
 
         return redirect()->route('admin.users.index');
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -64,12 +82,13 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+
+     
     public function edit(User $user)
     {
         if (Gate::denies('edit-users')) {
             return redirect(route('admin.users.index'));
         }
-
         $roles = Role::all();
 
         return view('admin.users.edit')->with([
@@ -77,6 +96,7 @@ class UserController extends Controller
             'roles' => $roles
         ]);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -89,8 +109,13 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $user->roles()->sync($request->roles);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
         return redirect()->route('admin.users.index');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -101,7 +126,6 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-
         if (Gate::denies('delete-users')) {
             return redirect(route('admin.users.index'));
         }
