@@ -6,17 +6,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-
-class LoginPageTest extends TestCase
+class UserRedirectedWithNoLogin extends TestCase
 {
     /**
      * A basic feature test example.
      *
      * @return void
      */
-    public function testLoginPage()
+    public function testExample()
     {
-        $response = $this->get('/login');
+        $response = $this->get('/');
 
         $response->assertStatus(200);
     }
