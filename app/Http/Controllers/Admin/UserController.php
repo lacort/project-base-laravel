@@ -65,7 +65,11 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->save();
+        if ($user->save()) {
+            $request->session()->flash('success', $user->name .' Registrado(a) com Sucesso');
+        } else {
+            $request->session()->flash('error', ' Houve um erro '. $user->name .' Não Foi Registrado(a)');
+        }
 
         $role = Role::select('id')->where('name', 'user')->first();
         $user->roles()->attach($role);
@@ -83,7 +87,7 @@ class UserController extends Controller
      */
 
 
-     
+
     public function edit(User $user)
     {
         if (Gate::denies('edit-users')) {
@@ -112,7 +116,14 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->save();
+
+        if ($user->save()) {
+            $request->session()->flash('success', $user->name .' alterado com Sucesso');
+        } else {
+            $request->session()->flash('error', ' Houve um erro '. $user->name .' não alterado');
+        }
+
+
         return redirect()->route('admin.users.index');
     }
 
