@@ -66,9 +66,9 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         if ($user->save()) {
-            $request->session()->flash('success', $user->name .' Registrado(a) com Sucesso');
+            $request->session()->flash('success', $user->name .' Registrado(a) Com Sucesso');
         } else {
-            $request->session()->flash('error', ' Houve um erro '. $user->name .' Não Foi Registrado(a)');
+            $request->session()->flash('error', ' Houve Um Erro '. $user->name .' Não Foi Registrado(a)');
         }
 
         $role = Role::select('id')->where('name', 'user')->first();
@@ -118,9 +118,9 @@ class UserController extends Controller
         $user->email = $request->email;
 
         if ($user->save()) {
-            $request->session()->flash('success', $user->name .' alterado com Sucesso');
+            $request->session()->flash('success', $user->name .' Alterado(a) Com Sucesso');
         } else {
-            $request->session()->flash('error', ' Houve um erro '. $user->name .' não alterado');
+            $request->session()->flash('error', ' Houve Um Erro '. $user->name .' Não Foi Alterado(a)');
         }
 
 
